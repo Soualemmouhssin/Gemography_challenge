@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Gemography_challenge</string>
+    <string name="title">Trending Repos</string>
+    <string name="description">This repository has no description</string>
+</resources>
