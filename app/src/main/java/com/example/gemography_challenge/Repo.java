@@ -9,7 +9,8 @@ public class Repo {
     private String title ;
     private String description = null ;
     private int stars = 0 ;
-    final static String url  = "https://api.github.com/search/repositories?q=created:>" ;
+    private User user ;
+    final static String url  = "https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc" ;
     final static String label_items ="items";
     final static String label_name= "name";
     final static String label_desc = "description";
@@ -25,16 +26,18 @@ public class Repo {
     private Repo (String title, String desc,int stars ,  String userName, String avatar_url) {
         this.title = title ;
         this.description = desc ;
-        this.stars ;
+        this.stars = stars;
+        this.user = new User(userName, avatar_url) ;
     }
 
-    Repo[] getReposFromStr (int page ) {
+    static Repo[] getReposFromStr (int page ) {
         String jsonString ="";
+        Log.d("repos", "execution done") ;
         try {
               jsonString = Utils.Get_url(url);
         }
         catch (Exception e) { e.printStackTrace();
-            Log.d("","exception " + e.toString());
+            Log.d("repos","exception " + e.toString());
             return null;
         }
 
@@ -44,25 +47,26 @@ public class Repo {
             JSONArray ReposArray = ReposObj.getJSONArray(label_items);
             if(ReposArray.length() <= 0 ) ;
             Repo repos[] = new Repo[ReposArray.length()];
+            Log.d("repos", "repos count " + String.valueOf(ReposArray.length()));
             for (int i = 0 ; i < ReposArray.length(); i++) {
                 JSONObject ReposObject = ReposArray.getJSONObject(i);
                 JSONObject OwnerObject = ReposObject.getJSONObject(label_owner) ;
-                repos[i] = new Repo(ReposObj.getString(label_name), ReposObj.getString(label_desc),ReposObj.getInt(label_stars),
-                            OwnerObject.getString(label_userName),OwnerObject.getString(label_avatar)) ;
+              //  Log.d("repos", " repo object "  + ReposObject);
+                repos[i] = new Repo(ReposObject.getString(label_name), ReposObject.getString(label_desc),ReposObject.getInt(label_stars),
+                        ReposObject.getString(label_userName),OwnerObject.getString(label_avatar)) ;
+                Log.d("repos", "repo name " + ReposObject.getString(label_name)) ;
             }
+
+            return repos;
 
         }
 
         catch (Exception e) { e.printStackTrace();
-            Log.d("","exception " + e.toString());}
+            Log.d("repos","exception " + e.toString());
+        }
         return null;
     }
 
-
-
-
-
-}
 
 
 }

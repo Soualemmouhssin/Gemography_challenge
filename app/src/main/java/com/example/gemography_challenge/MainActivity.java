@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new getData().execute() ;
     }
 
 
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         @SuppressLint("SetTextI18n")
         @Override
         protected String doInBackground(String... urls) {
+            Repo repos[] = Repo.getReposFromStr(1) ;
+            return null;
 
         }
 
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // can hide progress dialog.
         @Override
         protected void onPostExecute(String result) {
+            Log.d("debug", "repos execution done") ;
 
         }
     }
